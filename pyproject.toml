@@ -39,9 +39,7 @@ dev = [
     "mypy>=1.5.0",
 ]
 
-[project.scripts]
-start = "uvicorn app.main:app --host 0.0.0.0 --port 8000"
-dev = "uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload"
+# Removed invalid console scripts - using run.py instead
 
 [project.urls]
 Homepage = "https://github.com/example/uv-demo-app"
