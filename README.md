@@ -110,7 +110,7 @@ Visit the live demo at: [Your Render URL]
 
 ## 🚀 Deployment on Render
 
-This app is configured for seamless deployment on Render.com with native UV support:
+This app leverages Render's **native UV support** for lightning-fast deployments:
 
 1. **Fork this repository**
 2. **Connect to Render**:
@@ -118,17 +118,26 @@ This app is configured for seamless deployment on Render.com with native UV supp
    - Click "New +" → "Web Service"
    - Connect your GitHub repository
 3. **Configure deployment**:
-   - Render will automatically detect the `render.yaml` configuration
-   - UV dependencies will be installed automatically
-   - The app will be deployed with UV's blazing-fast setup
+   - Render automatically detects `uv.lock` and enables native UV support
+   - Dependencies install 10-100x faster than with pip
+   - The entire build completes in seconds, not minutes
+   - Experience UV's speed firsthand during deployment!
 
 ### Deployment Features
 
-- ✅ Native UV support (no manual installation needed)
-- ✅ Automatic dependency resolution from `pyproject.toml`
-- ✅ Fast builds with UV's caching
-- ✅ Health checks and auto-scaling
-- ✅ Environment variables pre-configured
+- ✅ **Native UV support** - No manual installation needed
+- ✅ **Lightning-fast builds** - UV's speed in action during deployment
+- ✅ **Reproducible deployments** - uv.lock ensures identical builds
+- ✅ **Automatic dependency resolution** - UV handles complex dependencies
+- ✅ **Health checks and auto-scaling** - Production-ready configuration
+
+### UV Support on Render
+
+Render provides native UV support when a `uv.lock` file is present:
+- 🚀 **Automatic detection** - Render sees `uv.lock` and uses UV
+- ⚡ **Super fast installs** - Experience UV's speed during build
+- 🔒 **Secure builds** - Hash verification and reproducible deployments
+- 📦 **Modern toolchain** - No need for requirements.txt or pip
 
 ## 🔧 Development
 

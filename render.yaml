@@ -6,11 +6,11 @@ services:
     region: oregon
     branch: main
     buildCommand: |
-      # Install UV (already available natively on Render)
-      echo "UV is natively supported on Render!"
+      # Render natively supports UV when uv.lock is present!
+      echo "🚀 Using Render's native UV support!"
       uv --version
       
-      # Sync dependencies from pyproject.toml
+      # Sync dependencies from uv.lock (super fast!)
       uv sync --frozen
       
       # Install the project in development mode
