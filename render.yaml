@@ -1,8 +1,8 @@
 services:
   - type: web
-    name: uv-demo-app
+    name: demoUVapp
     runtime: python
-    plan: free
+    plan: starter
     region: oregon
     branch: main
     buildCommand: |
@@ -59,9 +59,3 @@ services:
       - path: /*
         name: X-Content-Type-Options
         value: nosniff
-
-# Database (optional - for future enhancements)
-databases:
-  - name: uv-demo-db
-    plan: free
-    region: oregon

@@ -1,8 +1,563 @@
 {% extends "base.html" %}
 
+{% block title %}UV Python Version Management Demo{% endblock %}
+
 {% block content %}
-<div class="container mx-auto px-4 py-8">
-    <h1 class="text-3xl font-bold mb-4">UV Python Version Management</h1>
-    <p>This page is under construction.</p>
+<div class="container py-5">
+    <div class="row">
+        <div class="col-12 text-center mb-5">
+            <h1 class="display-4 fw-bold">
+                <i class="fab fa-python text-info"></i>
+                Python Version Management
+            </h1>
+            <p class="lead text-muted">Explore UV's seamless Python version management across your projects</p>
+        </div>
+    </div>
+
+    <!-- Current System Python -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <div class="card shadow">
+                <div class="card-header bg-info text-white">
+                    <h4 class="mb-0">
+                        <i class="fas fa-desktop"></i> Current Python Environment
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-8">
+                            <div id="currentPythonInfo" class="bg-light p-4 rounded">
+                                <div class="text-center">
+                                    <div class="spinner-border text-info" role="status">
+                                        <span class="visually-hidden">Loading Python information...</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="bg-light p-4 rounded">
+                                <h5>System Information</h5>
+                                <div id="systemPythonInfo">
+                                    <div class="text-center">
+                                        <div class="spinner-border text-info" role="status">
+                                            <span class="visually-hidden">Loading...</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <button class="btn btn-info" id="loadSystemInfo">
+                            <i class="fas fa-refresh"></i> Refresh System Info
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Python Version Management -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <div class="card shadow">
+                <div class="card-header bg-success text-white">
+                    <h4 class="mb-0">
+                        <i class="fas fa-download"></i> Python Version Installation Demo
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="card h-100">
+                                <div class="card-header bg-light">
+                                    <h6 class="mb-0">
+                                        <i class="fas fa-cog"></i> Install Python Version
+                                    </h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="mb-3">
+                                        <label for="pythonVersionSelect" class="form-label">Select Python Version</label>
+                                        <select class="form-select" id="pythonVersionSelect">
+                                            <option value="3.12.7">Python 3.12.7 (Latest)</option>
+                                            <option value="3.11.11" selected>Python 3.11.11 (Stable)</option>
+                                            <option value="3.10.15">Python 3.10.15 (LTS)</option>
+                                            <option value="3.9.21">Python 3.9.21 (Legacy)</option>
+                                            <option value="3.13.1">Python 3.13.1 (Beta)</option>
+                                        </select>
+                                    </div>
+                                    <div class="mb-3">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="setAsDefault" checked>
+                                            <label class="form-check-label" for="setAsDefault">
+                                                Set as project default
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <button class="btn btn-success" id="installPython">
+                                        <i class="fas fa-download"></i> Install Python Version
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card h-100">
+                                <div class="card-header bg-dark text-white">
+                                    <h6 class="mb-0">
+                                        <i class="fas fa-terminal"></i> Installation Output
+                                    </h6>
+                                </div>
+                                <div class="card-body">
+                                    <pre id="installationOutput" class="bg-dark text-light p-3 rounded" style="min-height: 200px;"><code># Click "Install Python Version" to see UV in action...</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Available Python Versions -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <div class="card shadow">
+                <div class="card-header bg-warning text-dark">
+                    <h4 class="mb-0">
+                        <i class="fas fa-list"></i> Available Python Versions
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-8">
+                            <div id="pythonVersionsGrid" class="row g-3">
+                                <div class="text-center">
+                                    <div class="spinner-border text-warning" role="status">
+                                        <span class="visually-hidden">Loading available versions...</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="bg-light p-4 rounded">
+                                <h5>Version Categories</h5>
+                                <div class="list-group">
+                                    <div class="list-group-item d-flex justify-content-between align-items-center">
+                                        <span>
+                                            <i class="fas fa-star text-warning"></i>
+                                            Latest (3.12.x)
+                                        </span>
+                                        <span class="badge bg-warning rounded-pill">Recommended</span>
+                                    </div>
+                                    <div class="list-group-item d-flex justify-content-between align-items-center">
+                                        <span>
+                                            <i class="fas fa-shield-alt text-success"></i>
+                                            Stable (3.11.x)
+                                        </span>
+                                        <span class="badge bg-success rounded-pill">Production</span>
+                                    </div>
+                                    <div class="list-group-item d-flex justify-content-between align-items-center">
+                                        <span>
+                                            <i class="fas fa-clock text-info"></i>
+                                            LTS (3.10.x)
+                                        </span>
+                                        <span class="badge bg-info rounded-pill">Long-term</span>
+                                    </div>
+                                    <div class="list-group-item d-flex justify-content-between align-items-center">
+                                        <span>
+                                            <i class="fas fa-flask text-primary"></i>
+                                            Beta (3.13.x)
+                                        </span>
+                                        <span class="badge bg-primary rounded-pill">Experimental</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <button class="btn btn-warning" id="loadPythonVersions">
+                            <i class="fas fa-download"></i> Load Available Versions
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Project-Specific Python -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">
+                        <i class="fas fa-project-diagram"></i> Project-Specific Python Versions
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <div class="row g-4">
+                        <div class="col-md-4">
+                            <div class="card border-success h-100">
+                                <div class="card-header bg-success text-white">
+                                    <h6 class="mb-0">
+                                        <i class="fas fa-globe"></i> Web App Project
+                                    </h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="text-center mb-3">
+                                        <div class="display-6 text-success">3.11</div>
+                                        <small class="text-muted">Python Version</small>
+                                    </div>
+                                    <div class="mb-2">
+                                        <small><strong>Framework:</strong> FastAPI</small>
+                                    </div>
+                                    <div class="mb-2">
+                                        <small><strong>Dependencies:</strong> 40+ packages</small>
+                                    </div>
+                                    <div class="mb-2">
+                                        <small><strong>Status:</strong> <span class="text-success">Active</span></small>
+                                    </div>
+                                    <div class="mt-3">
+                                        <code class="small">uv python pin 3.11</code>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card border-info h-100">
+                                <div class="card-header bg-info text-white">
+                                    <h6 class="mb-0">
+                                        <i class="fas fa-chart-bar"></i> Data Science
+                                    </h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="text-center mb-3">
+                                        <div class="display-6 text-info">3.12</div>
+                                        <small class="text-muted">Python Version</small>
+                                    </div>
+                                    <div class="mb-2">
+                                        <small><strong>Framework:</strong> Jupyter</small>
+                                    </div>
+                                    <div class="mb-2">
+                                        <small><strong>Dependencies:</strong> 25+ packages</small>
+                                    </div>
+                                    <div class="mb-2">
+                                        <small><strong>Status:</strong> <span class="text-info">Development</span></small>
+                                    </div>
+                                    <div class="mt-3">
+                                        <code class="small">uv python pin 3.12</code>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card border-warning h-100">
+                                <div class="card-header bg-warning text-dark">
+                                    <h6 class="mb-0">
+                                        <i class="fas fa-cogs"></i> Legacy System
+                                    </h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="text-center mb-3">
+                                        <div class="display-6 text-warning">3.9</div>
+                                        <small class="text-muted">Python Version</small>
+                                    </div>
+                                    <div class="mb-2">
+                                        <small><strong>Framework:</strong> Django</small>
+                                    </div>
+                                    <div class="mb-2">
+                                        <small><strong>Dependencies:</strong> 15+ packages</small>
+                                    </div>
+                                    <div class="mb-2">
+                                        <small><strong>Status:</strong> <span class="text-warning">Maintenance</span></small>
+                                    </div>
+                                    <div class="mt-3">
+                                        <code class="small">uv python pin 3.9</code>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Command Reference -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card bg-light">
+                <div class="card-body">
+                    <h3 class="text-center mb-4">UV Python Management Commands</h3>
+                    <div class="row g-4">
+                        <div class="col-md-6">
+                            <div class="card h-100">
+                                <div class="card-header bg-dark text-white">
+                                    <h5 class="mb-0">
+                                        <i class="fas fa-terminal"></i> Essential Commands
+                                    </h5>
+                                </div>
+                                <div class="card-body">
+                                    <pre class="bg-dark text-light p-3 rounded"><code># List available Python versions
+uv python list
+
+# Install a specific Python version
+uv python install 3.12
+
+# Set Python version for current project
+uv python pin 3.11
+
+# Show current Python version
+uv python show
+
+# Create project with specific Python
+uv init --python 3.12 my-project</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card h-100">
+                                <div class="card-header bg-success text-white">
+                                    <h5 class="mb-0">
+                                        <i class="fas fa-magic"></i> Advanced Usage
+                                    </h5>
+                                </div>
+                                <div class="card-body">
+                                    <pre class="bg-dark text-light p-3 rounded"><code># Install multiple versions
+uv python install 3.10 3.11 3.12
+
+# Use specific version for command
+uv run --python 3.12 python script.py
+
+# Find Python installations
+uv python find 3.11
+
+# Uninstall Python version
+uv python uninstall 3.10
+
+# Pin version with range
+uv python pin ">=3.11,<3.13"</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row mt-4">
+                        <div class="col-12">
+                            <div class="alert alert-info">
+                                <h5 class="alert-heading">
+                                    <i class="fas fa-lightbulb"></i> Pro Tip
+                                </h5>
+                                <p class="mb-0">
+                                    UV automatically manages Python installations across platforms. Unlike pyenv or conda, 
+                                    UV downloads and installs Python versions on-demand, ensuring consistent behavior 
+                                    across development, testing, and production environments.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-{% endblock %} 
+{% endblock %}
+
+{% block scripts %}
+<script>
+let systemInfo = null;
+let pythonVersions = [];
+
+// Load system Python information
+async function loadSystemInfo() {
+    try {
+        const response = await fetch('/api/system/info');
+        systemInfo = await response.json();
+        
+        displayCurrentPythonInfo(systemInfo);
+        displaySystemInfo(systemInfo);
+    } catch (error) {
+        console.error('Error loading system info:', error);
+        document.getElementById('currentPythonInfo').innerHTML = '<p class="text-danger">Failed to load system data</p>';
+    }
+}
+
+// Display current Python information
+function displayCurrentPythonInfo(info) {
+    const container = document.getElementById('currentPythonInfo');
+    const pythonVersion = info.python_version.split(' ')[0];
+    
+    container.innerHTML = `
+        <div class="row">
+            <div class="col-md-6">
+                <div class="text-center">
+                    <div class="display-4 text-info">
+                        <i class="fab fa-python"></i>
+                    </div>
+                    <h3 class="text-info">${pythonVersion}</h3>
+                    <p class="text-muted">Current Python Version</p>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="text-start">
+                    <h6>Python Details</h6>
+                    <div class="mb-2">
+                        <small><strong>Version:</strong> ${info.python_version}</small>
+                    </div>
+                    <div class="mb-2">
+                        <small><strong>Platform:</strong> ${info.platform}</small>
+                    </div>
+                    <div class="mb-2">
+                        <small><strong>Architecture:</strong> 64-bit</small>
+                    </div>
+                    <div class="mb-2">
+                        <small><strong>Package Manager:</strong> <span class="text-success">UV ⚡</span></small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+}
+
+// Display system information
+function displaySystemInfo(info) {
+    const container = document.getElementById('systemPythonInfo');
+    container.innerHTML = `
+        <div class="mb-2">
+            <strong>CPU Cores:</strong><br>
+            <small class="text-muted">${info.cpu_count} cores</small>
+        </div>
+        <div class="mb-2">
+            <strong>Memory:</strong><br>
+            <small class="text-muted">${info.memory_gb} GB RAM</small>
+        </div>
+        <div class="mb-2">
+            <strong>Disk Space:</strong><br>
+            <small class="text-muted">${info.disk_usage.free} GB free</small>
+        </div>
+        <div class="mb-2">
+            <strong>Platform:</strong><br>
+            <small class="text-muted">${info.platform}</small>
+        </div>
+    `;
+}
+
+// Simulate Python installation
+async function installPython() {
+    const version = document.getElementById('pythonVersionSelect').value;
+    const setDefault = document.getElementById('setAsDefault').checked;
+    
+    const button = document.getElementById('installPython');
+    button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Installing...';
+    button.disabled = true;
+    
+    const output = document.getElementById('installationOutput');
+    
+    // Simulate installation process
+    const steps = [
+        `🔍 Searching for Python ${version}...`,
+        `📥 Downloading Python ${version}...`,
+        `⚙️  Installing Python ${version}...`,
+        `🔧 Setting up virtual environment...`,
+        `✅ Python ${version} installed successfully!`,
+        setDefault ? `📌 Set Python ${version} as project default` : '',
+        `🚀 Ready to use Python ${version}`
+    ].filter(step => step);
+    
+    let currentStep = 0;
+    
+    const interval = setInterval(() => {
+        if (currentStep < steps.length) {
+            output.innerHTML = `<code>${steps.slice(0, currentStep + 1).join('\n')}</code>`;
+            currentStep++;
+        } else {
+            clearInterval(interval);
+            button.innerHTML = '<i class="fas fa-download"></i> Install Python Version';
+            button.disabled = false;
+        }
+    }, 800);
+}
+
+// Load and display available Python versions
+function loadPythonVersions() {
+    const container = document.getElementById('pythonVersionsGrid');
+    
+    // Mock Python versions data
+    const versions = [
+        { version: '3.13.1', status: 'beta', description: 'Latest features, experimental' },
+        { version: '3.12.7', status: 'latest', description: 'Current stable release' },
+        { version: '3.12.6', status: 'stable', description: 'Previous stable' },
+        { version: '3.11.11', status: 'stable', description: 'Production ready' },
+        { version: '3.11.10', status: 'stable', description: 'Stable maintenance' },
+        { version: '3.10.15', status: 'lts', description: 'Long-term support' },
+        { version: '3.10.14', status: 'lts', description: 'LTS maintenance' },
+        { version: '3.9.21', status: 'legacy', description: 'Legacy support' }
+    ];
+    
+    let html = '';
+    versions.forEach(v => {
+        let badgeClass = 'bg-secondary';
+        let icon = 'fa-python';
+        
+        switch (v.status) {
+            case 'beta':
+                badgeClass = 'bg-primary';
+                icon = 'fa-flask';
+                break;
+            case 'latest':
+                badgeClass = 'bg-warning';
+                icon = 'fa-star';
+                break;
+            case 'stable':
+                badgeClass = 'bg-success';
+                icon = 'fa-shield-alt';
+                break;
+            case 'lts':
+                badgeClass = 'bg-info';
+                icon = 'fa-clock';
+                break;
+            case 'legacy':
+                badgeClass = 'bg-secondary';
+                icon = 'fa-archive';
+                break;
+        }
+        
+        html += `
+            <div class="col-md-6 col-lg-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body text-center">
+                        <div class="mb-2">
+                            <i class="fas ${icon} fa-2x text-muted"></i>
+                        </div>
+                        <h6 class="card-title">Python ${v.version}</h6>
+                        <p class="card-text small text-muted">${v.description}</p>
+                        <span class="badge ${badgeClass}">${v.status.toUpperCase()}</span>
+                        <div class="mt-2">
+                            <button class="btn btn-sm btn-outline-primary" onclick="installSpecificVersion('${v.version}')">
+                                <i class="fas fa-download"></i> Install
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+    });
+    
+    container.innerHTML = html;
+}
+
+// Install specific Python version
+function installSpecificVersion(version) {
+    document.getElementById('pythonVersionSelect').value = version;
+    installPython();
+}
+
+// Event listeners
+document.getElementById('loadSystemInfo').addEventListener('click', loadSystemInfo);
+document.getElementById('installPython').addEventListener('click', installPython);
+document.getElementById('loadPythonVersions').addEventListener('click', loadPythonVersions);
+
+// Load initial data
+loadSystemInfo();
+loadPythonVersions();
+</script>
+{% endblock %}

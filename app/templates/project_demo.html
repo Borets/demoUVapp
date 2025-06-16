@@ -1,8 +1,678 @@
 {% extends "base.html" %}
 
+{% block title %}UV Project Management Demo{% endblock %}
+
 {% block content %}
-<div class="container mx-auto px-4 py-8">
-    <h1 class="text-3xl font-bold mb-4">UV Project Management</h1>
-    <p>This page is under construction.</p>
+<div class="container py-5">
+    <div class="row">
+        <div class="col-12 text-center mb-5">
+            <h1 class="display-4 fw-bold">
+                <i class="fas fa-folder-open text-warning"></i>
+                Project Management
+            </h1>
+            <p class="lead text-muted">Explore UV's comprehensive project lifecycle management capabilities</p>
+        </div>
+    </div>
+
+    <!-- Project Structure Visualization -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <div class="card shadow">
+                <div class="card-header bg-warning text-dark">
+                    <h4 class="mb-0">
+                        <i class="fas fa-sitemap"></i> Current Project Structure
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-8">
+                            <div id="projectStructure" class="bg-light p-4 rounded" style="min-height: 400px;">
+                                <div class="text-center">
+                                    <div class="spinner-border text-warning" role="status">
+                                        <span class="visually-hidden">Loading project structure...</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="bg-light p-4 rounded">
+                                <h5>Project Info</h5>
+                                <div id="projectInfo">
+                                    <div class="text-center">
+                                        <div class="spinner-border text-warning" role="status">
+                                            <span class="visually-hidden">Loading...</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mt-4">
+                                    <h6>Key Files</h6>
+                                    <div id="keyFiles">
+                                        <div class="text-center">
+                                            <div class="spinner-border text-warning" role="status">
+                                                <span class="visually-hidden">Loading...</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <button class="btn btn-warning" id="loadProjectStructure">
+                            <i class="fas fa-refresh"></i> Analyze Project
+                        </button>
+                        <button class="btn btn-outline-secondary" id="resetProjectView">
+                            <i class="fas fa-undo"></i> Reset View
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Environment Management -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <div class="card shadow">
+                <div class="card-header bg-success text-white">
+                    <h4 class="mb-0">
+                        <i class="fas fa-layer-group"></i> Environment Management
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <div class="row g-4">
+                        <div class="col-md-4">
+                            <div class="card border-primary h-100">
+                                <div class="card-header bg-primary text-white">
+                                    <h6 class="mb-0">
+                                        <i class="fas fa-cog"></i> Development
+                                    </h6>
+                                </div>
+                                <div class="card-body">
+                                    <div id="devEnvironment">
+                                        <div class="text-center">
+                                            <div class="spinner-border text-primary" role="status">
+                                                <span class="visually-hidden">Loading...</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card border-success h-100">
+                                <div class="card-header bg-success text-white">
+                                    <h6 class="mb-0">
+                                        <i class="fas fa-rocket"></i> Production
+                                    </h6>
+                                </div>
+                                <div class="card-body">
+                                    <div id="prodEnvironment">
+                                        <div class="text-center">
+                                            <div class="spinner-border text-success" role="status">
+                                                <span class="visually-hidden">Loading...</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card border-info h-100">
+                                <div class="card-header bg-info text-white">
+                                    <h6 class="mb-0">
+                                        <i class="fas fa-flask"></i> Testing
+                                    </h6>
+                                </div>
+                                <div class="card-body">
+                                    <div id="testEnvironment">
+                                        <div class="text-center">
+                                            <div class="spinner-border text-info" role="status">
+                                                <span class="visually-hidden">Loading...</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <button class="btn btn-success" id="loadEnvironments">
+                            <i class="fas fa-download"></i> Load Environment Data
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Project Initialization Demo -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <div class="card shadow">
+                <div class="card-header bg-info text-white">
+                    <h4 class="mb-0">
+                        <i class="fas fa-plus-circle"></i> Project Initialization
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="card h-100">
+                                <div class="card-header bg-light">
+                                    <h6 class="mb-0">
+                                        <i class="fas fa-terminal"></i> Interactive Demo
+                                    </h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="mb-3">
+                                        <label for="projectName" class="form-label">Project Name</label>
+                                        <input type="text" class="form-control" id="projectName" value="my-awesome-project" placeholder="Enter project name">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="pythonVersion" class="form-label">Python Version</label>
+                                        <select class="form-select" id="pythonVersion">
+                                            <option value="3.12">Python 3.12</option>
+                                            <option value="3.11" selected>Python 3.11</option>
+                                            <option value="3.10">Python 3.10</option>
+                                            <option value="3.9">Python 3.9</option>
+                                        </select>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="projectType" class="form-label">Project Type</label>
+                                        <select class="form-select" id="projectType">
+                                            <option value="web" selected>Web Application (FastAPI)</option>
+                                            <option value="cli">CLI Application</option>
+                                            <option value="library">Python Library</option>
+                                            <option value="data">Data Science</option>
+                                        </select>
+                                    </div>
+                                    <button class="btn btn-info" id="initializeProject">
+                                        <i class="fas fa-magic"></i> Initialize Project
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card h-100">
+                                <div class="card-header bg-dark text-white">
+                                    <h6 class="mb-0">
+                                        <i class="fas fa-code"></i> Generated Commands
+                                    </h6>
+                                </div>
+                                <div class="card-body">
+                                    <pre id="generatedCommands" class="bg-dark text-light p-3 rounded" style="min-height: 200px;"><code># Click "Initialize Project" to see UV commands...</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Workspace Management -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <div class="card shadow">
+                <div class="card-header bg-dark text-white">
+                    <h4 class="mb-0">
+                        <i class="fas fa-briefcase"></i> Workspace Management
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <h5>UV Workspace Features</h5>
+                            <div class="list-group">
+                                <div class="list-group-item d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h6 class="mb-1">Automatic Virtual Environments</h6>
+                                        <small class="text-muted">No manual activation needed</small>
+                                    </div>
+                                    <span class="badge bg-success rounded-pill">✓</span>
+                                </div>
+                                <div class="list-group-item d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h6 class="mb-1">Python Version Management</h6>
+                                        <small class="text-muted">Install and switch Python versions</small>
+                                    </div>
+                                    <span class="badge bg-success rounded-pill">✓</span>
+                                </div>
+                                <div class="list-group-item d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h6 class="mb-1">Lock File Generation</h6>
+                                        <small class="text-muted">Reproducible builds across environments</small>
+                                    </div>
+                                    <span class="badge bg-success rounded-pill">✓</span>
+                                </div>
+                                <div class="list-group-item d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h6 class="mb-1">Script Management</h6>
+                                        <small class="text-muted">Define and run project scripts</small>
+                                    </div>
+                                    <span class="badge bg-success rounded-pill">✓</span>
+                                </div>
+                                <div class="list-group-item d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h6 class="mb-1">Dependency Groups</h6>
+                                        <small class="text-muted">Organize dependencies by purpose</small>
+                                    </div>
+                                    <span class="badge bg-success rounded-pill">✓</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <h5>Project Commands</h5>
+                            <div class="bg-dark text-light p-3 rounded">
+                                <div class="mb-3">
+                                    <code class="text-info"># Create new project</code><br>
+                                    <code>uv init my-project</code>
+                                </div>
+                                <div class="mb-3">
+                                    <code class="text-info"># Add dependencies</code><br>
+                                    <code>uv add fastapi uvicorn</code>
+                                </div>
+                                <div class="mb-3">
+                                    <code class="text-info"># Add dev dependencies</code><br>
+                                    <code>uv add --dev pytest black ruff</code>
+                                </div>
+                                <div class="mb-3">
+                                    <code class="text-info"># Run scripts</code><br>
+                                    <code>uv run python main.py</code>
+                                </div>
+                                <div class="mb-3">
+                                    <code class="text-info"># Sync all dependencies</code><br>
+                                    <code>uv sync</code>
+                                </div>
+                                <div class="mb-3">
+                                    <code class="text-info"># Build package</code><br>
+                                    <code>uv build</code>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Performance Comparison -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card bg-light">
+                <div class="card-body">
+                    <h3 class="text-center mb-4">Project Management Comparison</h3>
+                    <div class="row g-4">
+                        <div class="col-md-4">
+                            <div class="card h-100 border-danger">
+                                <div class="card-header bg-danger text-white">
+                                    <h5 class="mb-0">
+                                        <i class="fas fa-turtle"></i> Traditional Setup
+                                    </h5>
+                                </div>
+                                <div class="card-body">
+                                    <pre class="bg-dark text-light p-3 rounded"><code># Multiple tools needed
+pip install virtualenv
+virtualenv venv
+source venv/bin/activate
+pip install requirements
+pip freeze > requirements.txt
+
+# Manual dependency management
+# Manual environment activation
+# No built-in script management
+# Time: ~5-10 minutes</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card h-100 border-warning">
+                                <div class="card-header bg-warning text-dark">
+                                    <h5 class="mb-0">
+                                        <i class="fas fa-cogs"></i> Poetry/Pipenv
+                                    </h5>
+                                </div>
+                                <div class="card-body">
+                                    <pre class="bg-dark text-light p-3 rounded"><code># Better but still slow
+poetry init
+poetry install
+poetry add fastapi
+poetry shell
+
+# Good dependency management
+# Lock file support
+# Still requires activation
+# Time: ~2-3 minutes</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card h-100 border-success">
+                                <div class="card-header bg-success text-white">
+                                    <h5 class="mb-0">
+                                        <i class="fas fa-rocket"></i> UV
+                                    </h5>
+                                </div>
+                                <div class="card-body">
+                                    <pre class="bg-dark text-light p-3 rounded"><code># One tool, lightning fast
+uv init my-project
+cd my-project
+uv add fastapi uvicorn
+uv run python main.py
+
+# Automatic everything
+# No manual activation
+# Built-in scripts
+# Time: ~30 seconds ⚡</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-{% endblock %} 
+{% endblock %}
+
+{% block scripts %}
+<script>
+let projectData = null;
+
+// Load project structure
+async function loadProjectStructure() {
+    try {
+        const response = await fetch('/api/project/structure');
+        projectData = await response.json();
+        
+        displayProjectStructure(projectData.structure);
+        displayProjectInfo(projectData);
+        displayKeyFiles(projectData.key_files);
+    } catch (error) {
+        console.error('Error loading project structure:', error);
+        document.getElementById('projectStructure').innerHTML = '<p class="text-danger">Failed to load project data</p>';
+    }
+}
+
+// Display project structure as a tree
+function displayProjectStructure(structure) {
+    const container = document.getElementById('projectStructure');
+    
+    function renderTree(items, level = 0) {
+        let html = '';
+        items.forEach(item => {
+            const indent = '  '.repeat(level);
+            const icon = item.type === 'directory' ? 'fa-folder' : 'fa-file';
+            const color = item.type === 'directory' ? 'text-warning' : 'text-muted';
+            
+            html += `
+                <div class="d-flex align-items-center mb-1">
+                    <span style="margin-left: ${level * 20}px;">
+                        <i class="fas ${icon} ${color} me-2"></i>
+                        <span class="${item.type === 'directory' ? 'fw-bold' : ''}">${item.name}</span>
+                        ${item.size ? `<small class="text-muted ms-2">(${formatFileSize(item.size)})</small>` : ''}
+                    </span>
+                </div>
+            `;
+            
+            if (item.children && item.children.length > 0) {
+                html += renderTree(item.children, level + 1);
+            }
+        });
+        return html;
+    }
+    
+    container.innerHTML = `
+        <div class="project-tree">
+            <div class="d-flex align-items-center mb-3">
+                <i class="fas fa-folder-open text-warning me-2"></i>
+                <strong>${projectData.project_root.split('/').pop() || 'uv-demo-app'}</strong>
+            </div>
+            ${renderTree(structure)}
+        </div>
+    `;
+}
+
+// Display project info
+function displayProjectInfo(data) {
+    const container = document.getElementById('projectInfo');
+    container.innerHTML = `
+        <div class="mb-2">
+            <strong>Project:</strong><br>
+            <small class="text-muted">${data.project_root.split('/').pop() || 'uv-demo-app'}</small>
+        </div>
+        <div class="mb-2">
+            <strong>Type:</strong><br>
+            <small class="text-muted">FastAPI Web Application</small>
+        </div>
+        <div class="mb-2">
+            <strong>Python:</strong><br>
+            <small class="text-muted">3.11+</small>
+        </div>
+        <div class="mb-2">
+            <strong>Package Manager:</strong><br>
+            <small class="text-success">UV ⚡</small>
+        </div>
+    `;
+}
+
+// Display key files status
+function displayKeyFiles(keyFiles) {
+    const container = document.getElementById('keyFiles');
+    const files = [
+        { name: 'pyproject.toml', present: keyFiles.pyproject_toml, description: 'Project configuration' },
+        { name: 'uv.lock', present: keyFiles.uv_lock, description: 'Dependency lock file' },
+        { name: 'requirements.txt', present: keyFiles.requirements_txt, description: 'Pip fallback' }
+    ];
+    
+    let html = '';
+    files.forEach(file => {
+        const icon = file.present ? 'fa-check-circle text-success' : 'fa-times-circle text-danger';
+        html += `
+            <div class="d-flex justify-content-between align-items-center mb-2">
+                <div>
+                    <small class="fw-bold">${file.name}</small><br>
+                    <small class="text-muted">${file.description}</small>
+                </div>
+                <i class="fas ${icon}"></i>
+            </div>
+        `;
+    });
+    
+    container.innerHTML = html;
+}
+
+// Load environment data
+async function loadEnvironments() {
+    try {
+        const response = await fetch('/api/dependencies/analysis');
+        const data = await response.json();
+        const envData = data.environment_management;
+        
+        // Development environment
+        document.getElementById('devEnvironment').innerHTML = `
+            <div class="text-center mb-3">
+                <div class="display-6 text-primary">${envData.project_environments.dev.packages.length}</div>
+                <small class="text-muted">Packages</small>
+            </div>
+            <div class="text-center mb-3">
+                <div class="h5 text-primary">${envData.project_environments.dev.size_mb} MB</div>
+                <small class="text-muted">Total Size</small>
+            </div>
+            <div class="text-start">
+                <small><strong>Key packages:</strong></small>
+                <div class="mt-1">
+                    ${envData.project_environments.dev.packages.slice(0, 3).map(pkg => 
+                        `<span class="badge bg-light text-dark me-1">${pkg}</span>`
+                    ).join('')}
+                </div>
+            </div>
+        `;
+        
+        // Production environment
+        document.getElementById('prodEnvironment').innerHTML = `
+            <div class="text-center mb-3">
+                <div class="display-6 text-success">${envData.project_environments.prod.packages.length}</div>
+                <small class="text-muted">Packages</small>
+            </div>
+            <div class="text-center mb-3">
+                <div class="h5 text-success">${envData.project_environments.prod.size_mb} MB</div>
+                <small class="text-muted">Total Size</small>
+            </div>
+            <div class="text-start">
+                <small><strong>Core packages:</strong></small>
+                <div class="mt-1">
+                    ${envData.project_environments.prod.packages.slice(0, 3).map(pkg => 
+                        `<span class="badge bg-light text-dark me-1">${pkg}</span>`
+                    ).join('')}
+                </div>
+            </div>
+        `;
+        
+        // Test environment
+        document.getElementById('testEnvironment').innerHTML = `
+            <div class="text-center mb-3">
+                <div class="display-6 text-info">${envData.project_environments.test.packages.length}</div>
+                <small class="text-muted">Packages</small>
+            </div>
+            <div class="text-center mb-3">
+                <div class="h5 text-info">${envData.project_environments.test.size_mb} MB</div>
+                <small class="text-muted">Total Size</small>
+            </div>
+            <div class="text-start">
+                <small><strong>Test tools:</strong></small>
+                <div class="mt-1">
+                    ${envData.project_environments.test.packages.slice(0, 3).map(pkg => 
+                        `<span class="badge bg-light text-dark me-1">${pkg}</span>`
+                    ).join('')}
+                </div>
+            </div>
+        `;
+        
+    } catch (error) {
+        console.error('Error loading environment data:', error);
+    }
+}
+
+// Initialize project demo
+function initializeProject() {
+    const projectName = document.getElementById('projectName').value;
+    const pythonVersion = document.getElementById('pythonVersion').value;
+    const projectType = document.getElementById('projectType').value;
+    
+    let commands = '';
+    
+    switch (projectType) {
+        case 'web':
+            commands = `# Initialize FastAPI web project
+uv init ${projectName}
+cd ${projectName}
+
+# Set Python version
+uv python pin ${pythonVersion}
+
+# Add web dependencies
+uv add fastapi uvicorn jinja2 python-multipart
+
+# Add development dependencies
+uv add --dev pytest black ruff mypy
+
+# Create basic structure
+mkdir app templates static
+echo "from fastapi import FastAPI\\napp = FastAPI()" > app/main.py
+
+# Run the application
+uv run uvicorn app.main:app --reload
+
+# ✅ Project ready in ~30 seconds!`;
+            break;
+        case 'cli':
+            commands = `# Initialize CLI application
+uv init ${projectName}
+cd ${projectName}
+
+# Set Python version
+uv python pin ${pythonVersion}
+
+# Add CLI dependencies
+uv add click rich typer
+
+# Add development dependencies
+uv add --dev pytest black ruff
+
+# Create CLI structure
+mkdir src
+echo "import click\\n\\n@click.command()\\ndef main():\\n    click.echo('Hello World!')" > src/cli.py
+
+# Run the CLI
+uv run python src/cli.py`;
+            break;
+        case 'library':
+            commands = `# Initialize Python library
+uv init ${projectName} --lib
+cd ${projectName}
+
+# Set Python version
+uv python pin ${pythonVersion}
+
+# Add library structure
+mkdir src/${projectName}
+echo "__version__ = '0.1.0'" > src/${projectName}/__init__.py
+
+# Add development dependencies
+uv add --dev pytest black ruff mypy sphinx
+
+# Build the package
+uv build`;
+            break;
+        case 'data':
+            commands = `# Initialize data science project
+uv init ${projectName}
+cd ${projectName}
+
+# Set Python version
+uv python pin ${pythonVersion}
+
+# Add data science dependencies
+uv add pandas numpy matplotlib seaborn jupyter
+
+# Add development dependencies
+uv add --dev pytest black ruff
+
+# Create notebook structure
+mkdir notebooks data outputs
+echo "print('Data science project ready!')" > main.py
+
+# Launch Jupyter
+uv run jupyter notebook`;
+            break;
+    }
+    
+    document.getElementById('generatedCommands').innerHTML = `<code>${commands}</code>`;
+}
+
+// Utility function to format file size
+function formatFileSize(bytes) {
+    if (bytes === 0) return '0 B';
+    const k = 1024;
+    const sizes = ['B', 'KB', 'MB', 'GB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
+}
+
+// Event listeners
+document.getElementById('loadProjectStructure').addEventListener('click', loadProjectStructure);
+document.getElementById('resetProjectView').addEventListener('click', () => {
+    document.getElementById('projectStructure').innerHTML = '<p class="text-muted text-center">Click "Analyze Project" to view structure</p>';
+    document.getElementById('projectInfo').innerHTML = '<p class="text-muted text-center">No project data</p>';
+    document.getElementById('keyFiles').innerHTML = '<p class="text-muted text-center">No file data</p>';
+});
+document.getElementById('loadEnvironments').addEventListener('click', loadEnvironments);
+document.getElementById('initializeProject').addEventListener('click', initializeProject);
+
+// Load initial data
+loadProjectStructure();
+loadEnvironments();
+</script>
+{% endblock %}
