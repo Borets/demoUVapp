@@ -12,12 +12,9 @@ services:
       
       # Sync dependencies from uv.lock (super fast!)
       uv sync --frozen
-      
-      # Install the project in development mode
-      uv pip install -e .
     startCommand: |
       # Start the application using UV
-      uv run uvicorn app.main:app --host 0.0.0.0 --port $PORT
+      uv run python run.py
     
     # Environment variables
     envVars:
