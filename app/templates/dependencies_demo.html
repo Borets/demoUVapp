@@ -312,24 +312,52 @@ let conflictData = null;
 async function loadDependencyAnalysis() {
     try {
         const response = await fetch('/api/dependencies/analysis');
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
         dependencyData = await response.json();
         
-        displayDependencyTree(dependencyData.dependency_tree);
-        displayDependencyStats(dependencyData.statistics);
+        // Check if we have valid data before proceeding
+        if (dependencyData && dependencyData.dependency_tree) {
+            displayDependencyTree(dependencyData.dependency_tree);
+        } else {
+            throw new Error('Invalid dependency data structure');
+        }
+        
+        if (dependencyData && dependencyData.statistics) {
+            displayDependencyStats(dependencyData.statistics);
+        }
     } catch (error) {
         console.error('Error loading dependency analysis:', error);
-        document.getElementById('dependencyTree').innerHTML = '<p class="text-danger">Failed to load dependency data</p>';
+        document.getElementById('dependencyTree').innerHTML = '<p class="text-danger">Failed to load dependency data: ' + error.message + '</p>';
+        document.getElementById('dependencyStats').innerHTML = '<p class="text-danger">Failed to load stats</p>';
     }
 }
 
 // Display dependency tree
 function displayDependencyTree(tree) {
     const container = document.getElementById('dependencyTree');
+    
+    // Safety check for null/undefined tree
+    if (!tree || typeof tree !== 'object') {
+        container.innerHTML = '<p class="text-warning">No dependency tree data available</p>';
+        return;
+    }
+    
     let html = '<div class="dependency-tree">';
     
     Object.entries(tree).forEach(([packageName, info]) => {
+        // Safety checks for info properties
+        if (!info || typeof info !== 'object') {
+            return; // Skip invalid entries
+        }
+        
         const isDirectClass = info.is_direct ? 'border-primary' : 'border-secondary';
         const badgeClass = info.is_direct ? 'bg-primary' : 'bg-secondary';
+        const version = info.version || 'unknown';
+        const sizeMb = info.size_mb || 0;
+        const license = info.license || 'unknown';
+        const dependencies = Array.isArray(info.dependencies) ? info.dependencies : [];
         
         html += `
             <div class="card mb-3 ${isDirectClass}">
@@ -338,19 +366,19 @@ function displayDependencyTree(tree) {
                         <div>
                             <h6 class="card-title">
                                 ${packageName} 
-                                <span class="badge ${badgeClass}">${info.version}</span>
+                                <span class="badge ${badgeClass}">${version}</span>
                                 ${info.is_direct ? '<span class="badge bg-success">Direct</span>' : '<span class="badge bg-light text-dark">Transitive</span>'}
                             </h6>
                             <p class="card-text">
                                 <small class="text-muted">
-                                    Size: ${info.size_mb} MB | License: ${info.license}
+                                    Size: ${sizeMb} MB | License: ${license}
                                 </small>
                             </p>
-                            ${info.dependencies.length > 0 ? `
+                            ${dependencies.length > 0 ? `
                                 <div class="mt-2">
                                     <small><strong>Dependencies:</strong></small>
                                     <div class="mt-1">
-                                        ${info.dependencies.map(dep => `<span class="badge bg-light text-dark me-1">${dep}</span>`).join('')}
+                                        ${dependencies.map(dep => `<span class="badge bg-light text-dark me-1">${dep}</span>`).join('')}
                                     </div>
                                 </div>
                             ` : ''}
@@ -368,29 +396,41 @@ function displayDependencyTree(tree) {
 // Display dependency statistics
 function displayDependencyStats(stats) {
     const container = document.getElementById('dependencyStats');
+    
+    // Safety check for stats object
+    if (!stats || typeof stats !== 'object') {
+        container.innerHTML = '<p class="text-warning">No statistics data available</p>';
+        return;
+    }
+    
+    const totalPackages = stats.total_packages || 0;
+    const directDeps = stats.direct_dependencies || 0;
+    const transitiveDeps = stats.transitive_dependencies || 0;
+    const totalSize = stats.total_size_mb || 0;
+    
     container.innerHTML = `
         <div class="row g-3">
             <div class="col-6">
                 <div class="text-center">
-                    <div class="display-6 text-success">${stats.total_packages}</div>
+                    <div class="display-6 text-success">${totalPackages}</div>
                     <small class="text-muted">Total Packages</small>
                 </div>
             </div>
             <div class="col-6">
                 <div class="text-center">
-                    <div class="display-6 text-primary">${stats.direct_dependencies}</div>
+                    <div class="display-6 text-primary">${directDeps}</div>
                     <small class="text-muted">Direct Dependencies</small>
                 </div>
             </div>
             <div class="col-6">
                 <div class="text-center">
-                    <div class="display-6 text-warning">${stats.transitive_dependencies}</div>
+                    <div class="display-6 text-warning">${transitiveDeps}</div>
                     <small class="text-muted">Transitive</small>
                 </div>
             </div>
             <div class="col-6">
                 <div class="text-center">
-                    <div class="display-6 text-info">${stats.total_size_mb}</div>
+                    <div class="display-6 text-info">${totalSize}</div>
                     <small class="text-muted">Total MB</small>
                 </div>
             </div>
