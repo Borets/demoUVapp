@@ -1,0 +1,70 @@
+services:
+  - type: web
+    name: uv-demo-app
+    runtime: python
+    plan: free
+    region: oregon
+    branch: main
+    buildCommand: |
+      # Install UV (already available natively on Render)
+      echo "UV is natively supported on Render!"
+      uv --version
+      
+      # Sync dependencies from pyproject.toml
+      uv sync --frozen
+      
+      # Install the project in development mode
+      uv pip install -e .
+    startCommand: |
+      # Start the application using UV
+      uv run uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    
+    # Environment variables
+    envVars:
+      - key: PYTHONPATH
+        value: /opt/render/project/src
+      - key: PYTHONUNBUFFERED
+        value: 1
+      - key: PORT
+        value: 8000
+    
+    # Health check endpoint
+    healthCheckPath: /health
+    
+    # Auto-deploy on push
+    autoDeploy: true
+    
+    # Scaling configuration
+    scaling:
+      minInstances: 1
+      maxInstances: 3
+    
+    # Build configuration optimized for UV
+    buildSettings:
+      installCommand: |
+        # UV handles all dependency installation
+        echo "Using UV for dependency management"
+      
+    # Disk space for UV cache
+    disk:
+      name: uv-cache
+      size: 1GB
+      mountPath: /opt/render/project/.uv-cache
+      
+    # Custom headers for the demo
+    headers:
+      - path: /*
+        name: X-Powered-By
+        value: UV Package Manager
+      - path: /*
+        name: X-Frame-Options
+        value: DENY
+      - path: /*
+        name: X-Content-Type-Options
+        value: nosniff
+
+# Database (optional - for future enhancements)
+databases:
+  - name: uv-demo-db
+    plan: free
+    region: oregon

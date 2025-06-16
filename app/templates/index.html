@@ -1,0 +1,258 @@
+{% extends "base.html" %}
+
+{% block title %}UV Package Manager Demo - Lightning Fast Python Package Management{% endblock %}
+
+{% block content %}
+<div class="hero-section bg-gradient-primary text-white py-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <h1 class="display-4 fw-bold mb-3">
+                    <i class="fas fa-bolt text-warning"></i>
+                    UV Package Manager
+                </h1>
+                <p class="lead mb-4">
+                    Experience the future of Python package management. UV is 10-100x faster than pip, 
+                    written in Rust, and provides a unified toolchain for all your Python needs.
+                </p>
+                <div class="d-flex gap-3">
+                    <a href="/demo/speed" class="btn btn-warning btn-lg">
+                        <i class="fas fa-tachometer-alt"></i> See Speed Demo
+                    </a>
+                    <a href="/docs" class="btn btn-outline-light btn-lg">
+                        <i class="fas fa-code"></i> API Docs
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="card bg-dark text-light">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            <i class="fas fa-terminal"></i> Quick Start
+                        </h5>
+                        <pre class="bg-black p-3 rounded"><code># Install dependencies
+uv add fastapi uvicorn
+
+# Create virtual environment
+uv venv
+
+# Run your app
+uv run uvicorn main:app --reload</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container py-5">
+    <div class="row">
+        <div class="col-12 text-center mb-5">
+            <h2 class="display-5 fw-bold">Why UV?</h2>
+            <p class="lead text-muted">Discover what makes UV the next generation Python package manager</p>
+        </div>
+    </div>
+
+    <div class="row g-4 mb-5">
+        <div class="col-md-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body text-center">
+                    <div class="feature-icon bg-success text-white rounded-circle mx-auto mb-3">
+                        <i class="fas fa-rocket fa-2x"></i>
+                    </div>
+                    <h5 class="card-title">Lightning Fast</h5>
+                    <p class="card-text">10-100x faster than pip for package installation and dependency resolution. Written in Rust for maximum performance.</p>
+                    <div class="mt-auto">
+                        <span class="badge bg-success">10-100x Faster</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body text-center">
+                    <div class="feature-icon bg-primary text-white rounded-circle mx-auto mb-3">
+                        <i class="fas fa-tools fa-2x"></i>
+                    </div>
+                    <h5 class="card-title">All-in-One</h5>
+                    <p class="card-text">Replaces pip, pip-tools, pipx, poetry, pyenv, virtualenv, and more. One tool for all your Python needs.</p>
+                    <div class="mt-auto">
+                        <span class="badge bg-primary">Unified Toolchain</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body text-center">
+                    <div class="feature-icon bg-warning text-white rounded-circle mx-auto mb-3">
+                        <i class="fas fa-lock fa-2x"></i>
+                    </div>
+                    <h5 class="card-title">Reliable</h5>
+                    <p class="card-text">Advanced dependency resolution, lock files for reproducible builds, and compatibility with existing Python ecosystem.</p>
+                    <div class="mt-auto">
+                        <span class="badge bg-warning">Rock Solid</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-md-6">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">
+                        <i class="fas fa-chart-line"></i> Performance Benchmark
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="performanceChart" width="400" height="200"></canvas>
+                </div>
+                <div class="card-footer">
+                    <a href="/demo/speed" class="btn btn-primary btn-sm">
+                        View Detailed Comparison
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-6">
+            <div class="card shadow-sm">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0">
+                        <i class="fas fa-sitemap"></i> Live System Info
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div id="systemInfo">
+                        <div class="text-center">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <a href="/demo/project" class="btn btn-success btn-sm">
+                        Explore Project Structure
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-5">
+        <div class="col-12">
+            <div class="card bg-light">
+                <div class="card-body">
+                    <h3 class="card-title text-center mb-4">Explore UV Capabilities</h3>
+                    <div class="row g-3">
+                        <div class="col-md-3">
+                            <a href="/demo/speed" class="btn btn-outline-primary w-100 py-3">
+                                <i class="fas fa-tachometer-alt d-block mb-2"></i>
+                                Speed Comparison
+                            </a>
+                        </div>
+                        <div class="col-md-3">
+                            <a href="/demo/dependencies" class="btn btn-outline-success w-100 py-3">
+                                <i class="fas fa-project-diagram d-block mb-2"></i>
+                                Dependency Management
+                            </a>
+                        </div>
+                        <div class="col-md-3">
+                            <a href="/demo/project" class="btn btn-outline-warning w-100 py-3">
+                                <i class="fas fa-folder-open d-block mb-2"></i>
+                                Project Management
+                            </a>
+                        </div>
+                        <div class="col-md-3">
+                            <a href="/demo/python-versions" class="btn btn-outline-info w-100 py-3">
+                                <i class="fab fa-python d-block mb-2"></i>
+                                Python Versions
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+// Performance Chart
+const ctx = document.getElementById('performanceChart').getContext('2d');
+new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: ['numpy', 'pandas', 'matplotlib', 'requests'],
+        datasets: [{
+            label: 'pip (seconds)',
+            data: [12.3, 28.7, 15.2, 3.1],
+            backgroundColor: 'rgba(220, 53, 69, 0.8)',
+            borderColor: 'rgba(220, 53, 69, 1)',
+            borderWidth: 1
+        }, {
+            label: 'uv (seconds)',
+            data: [0.8, 1.2, 0.9, 0.3],
+            backgroundColor: 'rgba(25, 135, 84, 0.8)',
+            borderColor: 'rgba(25, 135, 84, 1)',
+            borderWidth: 1
+        }]
+    },
+    options: {
+        responsive: true,
+        scales: {
+            y: {
+                beginAtZero: true,
+                title: {
+                    display: true,
+                    text: 'Installation Time (seconds)'
+                }
+            }
+        },
+        plugins: {
+            legend: {
+                display: true,
+                position: 'top'
+            }
+        }
+    }
+});
+
+// Load system info
+fetch('/api/system/info')
+    .then(response => response.json())
+    .then(data => {
+        const systemInfoDiv = document.getElementById('systemInfo');
+        systemInfoDiv.innerHTML = `
+            <div class="row g-2">
+                <div class="col-6">
+                    <strong>Python:</strong><br>
+                    <small class="text-muted">${data.python_version.split(' ')[0]}</small>
+                </div>
+                <div class="col-6">
+                    <strong>CPUs:</strong><br>
+                    <small class="text-muted">${data.cpu_count} cores</small>
+                </div>
+                <div class="col-6">
+                    <strong>Memory:</strong><br>
+                    <small class="text-muted">${data.memory_gb} GB</small>
+                </div>
+                <div class="col-6">
+                    <strong>Platform:</strong><br>
+                    <small class="text-muted">${data.platform}</small>
+                </div>
+            </div>
+        `;
+    })
+    .catch(error => {
+        console.error('Error loading system info:', error);
+        document.getElementById('systemInfo').innerHTML = '<p class="text-muted">System info unavailable</p>';
+    });
+</script>
+{% endblock %}
